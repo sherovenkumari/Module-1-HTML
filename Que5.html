@@ -1,0 +1,25 @@
+
+<form onsubmit="document.getElementById('confirmation').value='Registration Successful!'; return false;">
+    <input type="text" name="name" placeholder="Your Name" required autofocus><br>
+    <input type="email" name="email" placeholder="Your Email" required><br>
+    <input type="date" name="date" required><br>
+    
+    <select name="eventType" required>
+        <option value="">Select Event</option>
+        <option value="music">Music Festival</option>
+        <option value="sports">Sports Meet</option>
+    </select><br>
+
+    <textarea name="message" placeholder="Your Message"></textarea><br>
+
+    <button type="submit">Register</button>
+    <output id="confirmation"></output>
+</form>
+
+<style>
+    form {
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 300px;
+    }
+</style>
