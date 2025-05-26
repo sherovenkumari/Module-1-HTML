@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Local Community Event Portal</title>
+    <style>
+        #welcomeBanner {
+            background-color: blue;
+            color: white;
+            padding: 10px;
+        }
+        .highlight {
+            background-color: yellow;
+        }
+        .gallery-img {
+            border: 2px solid #000;
+            width: 100px;
+            height: auto;
+        }
+        form {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#events">Events</a>
+        <a href="#contact">Contact</a>
+        <a href="help.html" target="_blank">Help</a>
+    </nav>
+
+    <!-- Main -->
+    <section id="home">
+        <div id="welcomeBanner">
+            Welcome, John!
+            <span style="color:red; font-weight:bold;">Special Offer: 20% off</span>
+        </div>
+        <p class="highlight">Don't miss our annual festival!</p>
+    </section>
+
+    <section id="events">
+        <h2>Upcoming Events</h2>
+        <table border="1">
+            <caption>Community Events Gallery</caption>
+            <tr>
+                <td><img src="https://via.placeholder.com/100?text=Event+1" alt="Event 1" title="Picnic Day" class="gallery-img"></td>
+                <td><img src="https://via.placeholder.com/100?text=Event+2" alt="Event 2" title="Music Fest" class="gallery-img"></td>
+                <td><img src="https://via.placeholder.com/100?text=Event+3" alt="Event 3" title="Art Fair" class="gallery-img"></td>
+            </tr>
+            <tr>
+                <td><img src="https://via.placeholder.com/100?text=Event+4" alt="Event 4" title="Marathon" class="gallery-img"></td>
+                <td><img src="https://via.placeholder.com/100?text=Event+5" alt="Event 5" title="Food Carnival" class="gallery-img"></td>
+                <td><img src="https://via.placeholder.com/100?text=Event+6" alt="Event 6" title="Book Fair" class="gallery-img"></td>
+            </tr>
+        </table>
+
+        <form onsubmit="document.getElementById('confirmation').value='Registration Successful!'; return false;">
+            <input type="text" name="name" placeholder="Your Name" required autofocus><br>
+            <input type="email" name="email" placeholder="Your Email" required><br>
+            <input type="date" name="date" required><br>
+            <select name="eventType" required>
+                <option value="">Select Event</option>
+                <option value="music">Music Festival</option>
+                <option value="sports">Sports Meet</option>
+            </select><br>
+            <textarea name="message" placeholder="Your Message"></textarea><br>
+            <button type="submit">Register</button>
+            <output id="confirmation"></output>
+        </form>
+
+        <input type="text" id="phone" placeholder="Phone Number" onblur="validatePhone()"><br>
+        <select id="eventFee" onchange="showFee(this)">
+            <option value="0">Select Event</option>
+            <option value="10">Yoga ($10)</option>
+            <option value="20">Music ($20)</option>
+        </select><br>
+        <p id="feeDisplay"></p>
+
+        <button onclick="alert('Feedback Submitted')">Submit</button><br>
+        <img src="https://via.placeholder.com/150" ondblclick="this.style.width='300px';"><br>
+
+        <textarea id="feedback" onkeyup="countChars()" placeholder="Your feedback..."></textarea>
+        <p id="charCount">0 characters</p>
+
+        <video id="eventVideo" width="320" controls oncanplay="videoReady()">
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p id="videoStatus"></p>
+
+        <select id="preferredEvent" onchange="savePreference(this)">
+            <option value="">Choose Event</option>
+            <option value="music">Music</option>
+            <option value="sports">Sports</option>
+        </select>
+        <button onclick="clearPrefs()">Clear Preferences</button>
+
+        <button onclick="findNearby()">Find Nearby Events</button>
+        <p id="location"></p>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+    </section>
+
+    <!-- Footer -->
+
+    <script>
+        function validatePhone() {
+            let phone = document.getElementById("phone").value;
+            if (!/^\d{10}$/.test(phone)) alert("Enter a valid 10-digit phone number");
+        }
+
+        function showFee(select) {
+            document.getElementById("feeDisplay").innerText = "Fee: $" + select.value;
+        }
+
+        function countChars() {
+            let count = document.getElementById("feedback").value.length;
+            document.getElementById("charCount").innerText = count + " characters";
+        }
+
+        function videoReady() {
+            document.getElementById("videoStatus").innerText = "Video ready to play";
+        }
+
+        window.onbeforeunload = function() {
+            return "You have unsaved changes. Are you sure you want to leave?";
+        };
+
+        function savePreference(select) {
+            localStorage.setItem("eventType", select.value);
+        }
+
+        window.onload = function() {
+            let saved = localStorage.getItem("eventType");
+            if (saved) document.getElementById("preferredEvent").value = saved;
+        };
+
+        function clearPrefs() {
+            localStorage.clear();
+            sessionStorage.clear();
+            alert("Preferences cleared");
+        }
+
+        function findNearby() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPos, showError, { enableHighAccuracy: true, timeout: 5000 });
+            } else {
+                document.getElementById("location").innerText = "Geolocation not supported";
+            }
+        }
+
+        function showPos(position) {
+            document.getElementById("location").innerText = "Latitude: " + position.coords.latitude +
+                ", Longitude: " + position.coords.longitude;
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
